@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { useState } from 'react';
 import { CloseButton } from './ImageGalleryItem.styled';
 import Modal from 'react-modal';
 import { AiOutlineClose } from 'react-icons/ai';
@@ -17,38 +17,31 @@ const customStyles = {
 
 Modal.setAppElement('#root');
 
-export class ImageGalleryItem extends Component {
-  state = {
-    isModalOpen: false,
+export const ImageGalleryItem = ({ webformatURL, tags }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
   };
 
-  openModal = () => {
-    this.setState({ isModalOpen: true });
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
-  closeModal = () => {
-    this.setState({ isModalOpen: false });
-  };
-
-  render() {
-    const { webformatURL, tags } = this.props;
-    const { isModalOpen } = this.state;
-
-    return (
-      <>
-        <img src={webformatURL} alt={tags} onClick={this.openModal} />
-        <Modal
-          isOpen={isModalOpen}
-          onRequestClose={this.closeModal}
-          style={customStyles}
-          contentLabel="Example Modal"
-        >
-          <img src={webformatURL} alt={tags} />
-          <CloseButton type="button" onClick={this.closeModal}>
-            <AiOutlineClose />
-          </CloseButton>
-        </Modal>
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <img src={webformatURL} alt={tags} onClick={openModal} />
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        style={customStyles}
+        contentLabel="Example Modal"
+      >
+        <img src={webformatURL} alt={tags} />
+        <CloseButton type="button" onClick={closeModal}>
+          <AiOutlineClose />
+        </CloseButton>
+      </Modal>
+    </>
+  );
+};
